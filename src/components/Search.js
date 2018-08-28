@@ -10,32 +10,47 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { withStyles } from '@material-ui/core/styles';
 import SearchBar from 'material-ui-search-bar';
 
-import { onSearchChange, getSuggestions, clearSuggestions } from '../actions';
+import {
+  onSearchChange,
+  onSearchSubmit,
+  getSuggestions,
+  clearSuggestions,
+} from '../actions';
 
-function renderInputComponent(inputProps) {
-  return <SearchBar inputProps={inputProps} />;
+function renderInputComponent({ handleSubmit, ...inputProps }) {
+  return <SearchBar inputProps={inputProps} onRequestSearch={handleSubmit} />;
 }
 
 function renderSuggestion(suggestion, { query, isHighlighted }) {
   const matches = match(suggestion, query);
   const parts = parse(suggestion, matches);
 
+  const textStyles = {
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+  };
+
   return (
     <MenuItem selected={isHighlighted} component="div">
-      <div>
-        {parts.map(
-          (part, index) =>
-            part.highlight ? (
-              <span key={String(index)} style={{ fontWeight: 500 }}>
-                {part.text}
-              </span>
-            ) : (
-              <strong key={String(index)} style={{ fontWeight: 300 }}>
-                {part.text}
-              </strong>
-            ),
-        )}
-      </div>
+      {parts.map(
+        (part, index) =>
+          part.highlight ? (
+            <span
+              key={String(index)}
+              style={{ fontWeight: 500, ...textStyles }}
+            >
+              {part.text}
+            </span>
+          ) : (
+            <strong
+              key={String(index)}
+              style={{ fontWeight: 300, ...textStyles }}
+            >
+              {part.text}
+            </strong>
+          ),
+      )}
     </MenuItem>
   );
 }
@@ -68,17 +83,19 @@ const styles = theme => ({
   },
 });
 
-const Searchbar = ({
+const Search = ({
   classes,
   searchQuery,
   searchSuggestions,
   handleSearch,
   handleSuggestionsFetchRequested,
   handleSuggestionsClearRequested,
+  submitSearch,
 }) => {
   const inputProps = {
     value: searchQuery,
     onChange: handleSearch,
+    handleSubmit: submitSearch(searchQuery),
   };
 
   const theme = {
@@ -119,15 +136,21 @@ const mapDispatchToProps = dispatch => ({
   handleSuggestionsFetchRequested: ({ value }) =>
     dispatch(getSuggestions(value)),
   handleSuggestionsClearRequested: () => dispatch(clearSuggestions()),
+  submitSearch: value => () => dispatch(onSearchSubmit(value)),
 });
 
-Searchbar.propTypes = {
+renderInputComponent.propTypes = {
+  handleSubmit: PropTypes.func.isRequired,
+};
+
+Search.propTypes = {
   classes: PropTypes.object.isRequired,
   searchQuery: PropTypes.string.isRequired,
   searchSuggestions: PropTypes.arrayOf(PropTypes.string).isRequired,
   handleSearch: PropTypes.func.isRequired,
   handleSuggestionsFetchRequested: PropTypes.func.isRequired,
   handleSuggestionsClearRequested: PropTypes.func.isRequired,
+  submitSearch: PropTypes.func.isRequired,
 };
 
 export default compose(
@@ -136,4 +159,4 @@ export default compose(
     mapStateToProps,
     mapDispatchToProps,
   ),
-)(Searchbar);
+)(Search);
