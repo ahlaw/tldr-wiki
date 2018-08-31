@@ -2,19 +2,22 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
 import Typography from '@material-ui/core/Typography';
-import { withStyles } from '@material-ui/core/styles';
 
 import { getPageInfo } from '../actions';
-
-const styles = theme => ({
-  root: {},
-});
 
 class PageInfo extends React.Component {
   componentDidMount() {
     const { init, match } = this.props;
     init(match.params.id);
+  }
+
+  componentDidUpdate(prevProps) {
+    const { init, match } = this.props;
+    if (match.params.id !== prevProps.match.params.id) {
+      init(match.params.id);
+    }
   }
 
   render() {
@@ -52,7 +55,6 @@ const mapDispatchToProps = dispatch => ({
 });
 
 PageInfo.propTypes = {
-  classes: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired,
   description: PropTypes.string,
   missing: PropTypes.bool,
@@ -67,7 +69,7 @@ PageInfo.defaultProps = {
 };
 
 export default compose(
-  withStyles(styles),
+  withRouter,
   connect(
     mapStateToProps,
     mapDispatchToProps,

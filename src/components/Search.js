@@ -5,10 +5,10 @@ import { connect } from 'react-redux';
 import Autosuggest from 'react-autosuggest';
 import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
+import SearchBar from 'material-ui-search-bar';
+import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
-import { withStyles } from '@material-ui/core/styles';
-import SearchBar from 'material-ui-search-bar';
 
 import {
   onSearchChange,
@@ -57,7 +57,6 @@ function renderSuggestion(suggestion, { query, isHighlighted }) {
 
 const styles = theme => ({
   root: {
-    height: 250,
     flexGrow: 1,
   },
   container: {
