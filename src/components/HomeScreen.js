@@ -8,7 +8,7 @@ import Search from './Search';
 
 const styles = theme => ({
   root: {
-    paddingTop: theme.spacing.unit * 8,
+    paddingTop: theme.spacing.unit * 2,
     [theme.breakpoints.up('md')]: {
       paddingTop: theme.spacing.unit * 16,
     },

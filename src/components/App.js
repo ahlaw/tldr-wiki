@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect, Route, Switch } from 'react-router';
+import { Route, Switch } from 'react-router';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
 import HomeScreen from './HomeScreen';
@@ -10,8 +10,7 @@ export default () => (
     <CssBaseline />
     <Switch>
       <Route exact path="/" component={HomeScreen} />
-      <Route path="/wiki/:id" component={SearchScreen} />
-      <Redirect from="*" to="/" />
+      <Route path="/:id" component={SearchScreen} />
     </Switch>
   </React.Fragment>
 );

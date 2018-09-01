@@ -95,6 +95,7 @@ const Search = ({
     value: searchQuery,
     onChange: handleSearch,
     handleSubmit: submitSearch(searchQuery),
+    'aria-label': 'searchbar',
   };
 
   const theme = {

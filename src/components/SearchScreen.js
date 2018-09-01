@@ -19,10 +19,7 @@ const styles = theme => ({
     },
   },
   article: {
-    padding: theme.spacing.unit * 2,
-    [theme.breakpoints.up('md')]: {
-      paddingTop: theme.spacing.unit * 4,
-    },
+    padding: theme.spacing.unit * 4,
   },
 });
 

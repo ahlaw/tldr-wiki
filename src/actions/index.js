@@ -33,7 +33,7 @@ export function getSuggestions(query) {
 
 export function onSearchSubmit(query) {
   return dispatch => {
-    dispatch(push(`/wiki/${query}`));
+    dispatch(push(`/${query}`));
   };
 }
 
